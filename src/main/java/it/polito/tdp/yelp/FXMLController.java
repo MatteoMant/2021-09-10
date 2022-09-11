@@ -5,7 +5,12 @@
 package it.polito.tdp.yelp;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.yelp.model.Business;
 import it.polito.tdp.yelp.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,26 +42,49 @@ public class FXMLController {
     private TextField txtX2; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbCitta"
-    private ComboBox<?> cmbCitta; // Value injected by FXMLLoader
+    private ComboBox<String> cmbCitta; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbB1"
-    private ComboBox<?> cmbB1; // Value injected by FXMLLoader
+    private ComboBox<Business> cmbB1; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbB2"
-    private ComboBox<?> cmbB2; // Value injected by FXMLLoader
+    private ComboBox<Business> cmbB2; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
     
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	txtResult.clear();
+    	cmbB1.getItems().clear();
+    	String citta = cmbCitta.getValue();
+    	if (citta == null) {
+    		txtResult.setText("Per favore selezionare una citta!");
+    		return;
+    	}
+    	this.model.creaGrafo(citta);
+    	txtResult.setText("Grafo creato!\n");
+    	txtResult.appendText("# Vertici " + this.model.getNumVertici() + "\n");
+    	txtResult.appendText("# Archi " + this.model.getNumArchi() + "\n");
     	
+    	// Dopo che abbiamo creato il grafo, possiamo popolare la tendina dei locali presenti nel grafo
+    	List<Business> locali = new LinkedList<>(this.model.getVertici());
+    	Collections.sort(locali);
+    	cmbB1.getItems().addAll(locali);
     }
 
     @FXML
     void doCalcolaLocaleDistante(ActionEvent event) {
-
-    	
+    	txtResult.clear();
+    	Business locale = cmbB1.getValue();
+    	if (locale == null) {
+    		txtResult.setText("Per favore selezionare un locale!\n");
+    		return;
+    	}
+    	Business localePiuDistante = this.model.calcolaLocalePiuDistante(locale);
+    	txtResult.setText("LOCALE PIU' DISTANTE: \n");
+    	double distanza = this.model.getDistanzaLocale(locale, localePiuDistante);
+    	txtResult.appendText(localePiuDistante.toString() + " distante " + distanza + " km");
     }
 
     @FXML
@@ -80,5 +108,9 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	List<String> citta = this.model.getAllCitta();
+    	Collections.sort(citta);
+    	cmbCitta.getItems().addAll(citta);
     }
 }

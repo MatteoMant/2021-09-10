@@ -1,6 +1,6 @@
 package it.polito.tdp.yelp.model;
 
-public class Business {
+public class Business implements Comparable<Business>{
 	private String businessId;
 	private String fullAddress;
 	private String active;
@@ -35,72 +35,95 @@ public class Business {
 	public String getBusinessId() {
 		return businessId;
 	}
+	
 	public void setBusinessId(String businessId) {
 		this.businessId = businessId;
 	}
+	
 	public String getFullAddress() {
 		return fullAddress;
 	}
+	
 	public void setFullAddress(String fullAddress) {
 		this.fullAddress = fullAddress;
 	}
+	
 	public String getActive() {
 		return active;
 	}
+	
 	public void setActive(String active) {
 		this.active = active;
 	}
+	
 	public String getCategories() {
 		return categories;
 	}
+	
 	public void setCategories(String categories) {
 		this.categories = categories;
 	}
+	
 	public String getCity() {
 		return city;
 	}
+	
 	public void setCity(String city) {
 		this.city = city;
 	}
+	
 	public int getReviewCount() {
 		return reviewCount;
 	}
+	
 	public void setReviewCount(int reviewCount) {
 		this.reviewCount = reviewCount;
 	}
+	
 	public String getBusinessName() {
 		return businessName;
 	}
+	
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
+	
 	public String getNeighborhoods() {
 		return neighborhoods;
 	}
+	
 	public void setNeighborhoods(String neighborhoods) {
 		this.neighborhoods = neighborhoods;
 	}
+	
 	public double getLatitude() {
 		return latitude;
 	}
+	
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	
 	public double getLongitude() {
 		return longitude;
 	}
+	
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+	
 	public String getState() {
 		return state;
 	}
+	
 	public void setState(String state) {
 		this.state = state;
 	}
+	
 	public double getStars() {
 		return stars;
 	}
+	
 	public void setStars(double stars) {
 		this.stars = stars;
 	}
@@ -130,6 +153,14 @@ public class Business {
 		return true;
 	}
 
+	@Override
+	public int compareTo(Business other) {
+		return this.getBusinessName().compareTo(other.getBusinessName());
+	}
 
+	@Override
+	public String toString() {
+		return businessName;
+	}
 	
 }
